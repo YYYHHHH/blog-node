@@ -13,7 +13,7 @@ var SQLForm = require('./SQLForm');
 // 使用DBConfig.js的配置信息创建一个MySQL连接池
 var pool = mysql.createPool( dbConfig.mysql );
 
-/*//设置跨域访问   前端devServer设置了转发
+//设置跨域访问
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -21,7 +21,7 @@ app.all('*', function(req, res, next) {
     res.header("X-Powered-By",' 3.2.1');
     res.header("Content-Type", "application/json;charset=utf-8");
     next();
-});*/
+});
 
 /**
  * 数据库查询
@@ -60,6 +60,35 @@ app.post('/article/report',async function (req,res,next) {
         console.log('[SELECT ERROR] - ',err.message);
     }
 });
+
+//获取文章列表
+app.post('/article/getList',async function (req,res,next) {
+    let reportSqlParams = [req.body.title,req.body.content,req.body.secret,Date.now()];
+    try {
+        let results = await Model(SQLForm.ArticleSQL.getArticleList);
+        res.json({
+            success:true,
+            msg:'获取成功!',
+            data: results
+        });
+    } catch (err) {
+        next(err);
+        console.log('[SELECT ERROR] - ',err.message);
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*//发表文章
 app.post('/article/report',async function (req,res,next) {
@@ -101,7 +130,7 @@ app.get('/nextRoute',function (req,res,next) {
 });
 //↑
 
-app.get("*", function(request, response) {
+app.use("*", function(request, response) {
     response.end("404!");
 });
 app.listen(8081, function () {
