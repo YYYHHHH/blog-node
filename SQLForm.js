@@ -4,11 +4,11 @@
 module.exports = {
     ArticleSQL:{
         report:'INSERT INTO articlelist (title,content,secret,create_time) VALUES (?,?,?,?)',
-        edit:'UPDATE articlelist SET title=?,content=?,secret=0,edit_time=? WHERE art_id = ?',
+        edit:'UPDATE articlelist SET title=?,content=?,secret=?,edit_time=? WHERE art_id =?',
         secret:'UPDATE articlelist SET secret=? WHERE art_id = ?',
         top:'UPDATE articlelist SET top=? WHERE art_id = ?',
         getArticleList:'SELECT * FROM articlelist',
         getArticleById:'SELECT * FROM articlelist WHERE art_id = ?',
-        delete:'DELETE FROM articlelist where id=?'
+        delete:'DELETE FROM articlelist where art_id=?'
     }
 };

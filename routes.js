@@ -45,7 +45,7 @@ const Model = (sql, params) => {
     });
 };
 
-//发表文章
+//发表/新增文章
 app.post('/article/report',async function (req,res,next) {
     let reportSqlParams = [req.body.title,req.body.content,req.body.secret,Date.now()];
     try {
@@ -56,30 +56,97 @@ app.post('/article/report',async function (req,res,next) {
             data: results
         });
     } catch (err) {
-        next(err);
+        console.log('[SELECT ERROR] - ',err.message);
+    }
+});
+//编辑文章
+app.post('/article/edit',async function (req,res,next) {
+    let reportSqlParams = [req.body.title,req.body.content,req.body.secret,Date.now(),req.body.art_id];
+    try {
+        let results = await Model(SQLForm.ArticleSQL.edit,reportSqlParams);
+        res.json({
+            success:true,
+            msg:'发表成功!',
+            data: results
+        });
+    } catch (err) {
         console.log('[SELECT ERROR] - ',err.message);
     }
 });
 
 //获取文章列表
 app.post('/article/getList',async function (req,res,next) {
-    let reportSqlParams = [req.body.title,req.body.content,req.body.secret,Date.now()];
+    let reportSqlParams = [req.body.pageIndex];
     try {
-        let results = await Model(SQLForm.ArticleSQL.getArticleList);
+        let results = await Model(SQLForm.ArticleSQL.getArticleList,reportSqlParams);
         res.json({
             success:true,
             msg:'获取成功!',
             data: results
         });
     } catch (err) {
-        next(err);
         console.log('[SELECT ERROR] - ',err.message);
     }
 });
 
 
+//删除文章
+app.post('/article/delete',async function (req,res,next) {
+    let reportSqlParams = [req.body.art_id];
+    try {
+        let results = await Model(SQLForm.ArticleSQL.delete,reportSqlParams);
+        res.json({
+            success:true,
+            msg:'删除成功!',
+            data: results
+        });
+    } catch (err) {
+        console.log('[SELECT ERROR] - ',err.message);
+    }
+});
 
-
+//设为私密
+app.post('/article/secret',async function (req,res,next) {
+    let reportSqlParams = [1,req.body.art_id];
+    try {
+        let results = await Model(SQLForm.ArticleSQL.secret,reportSqlParams);
+        res.json({
+            success:true,
+            msg:'设置成功!',
+            data: results
+        });
+    } catch (err) {
+        console.log('[SELECT ERROR] - ',err.message);
+    }
+});
+//设为公开
+app.post('/article/unsecret',async function (req,res,next) {
+    let reportSqlParams = [0,req.body.art_id];
+    try {
+        let results = await Model(SQLForm.ArticleSQL.secret,reportSqlParams);
+        res.json({
+            success:true,
+            msg:'设置成功!',
+            data: results
+        });
+    } catch (err) {
+        console.log('[SELECT ERROR] - ',err.message);
+    }
+});
+//置顶
+app.post('/article/top',async function (req,res,next) {
+    let reportSqlParams = [1,req.body.art_id];
+    try {
+        let results = await Model(SQLForm.ArticleSQL.top,reportSqlParams);
+        res.json({
+            success:true,
+            msg:'置顶成功!',
+            data: results
+        });
+    } catch (err) {
+        console.log('[SELECT ERROR] - ',err.message);
+    }
+});
 
 
 
