@@ -52,11 +52,11 @@ app.post('/article/report',async function (req,res,next) {
         let results = await Model(SQLForm.ArticleSQL.report,reportSqlParams);
         res.json({
             success:true,
-            msg:'发表成功!',
+            msg:'新增成功!',
             data: results
         });
     } catch (err) {
-        console.log('[SELECT ERROR] - ',err.message);
+        res.send('[SELECT ERROR] - ',err.message);
     }
 });
 //编辑文章
@@ -66,17 +66,19 @@ app.post('/article/edit',async function (req,res,next) {
         let results = await Model(SQLForm.ArticleSQL.edit,reportSqlParams);
         res.json({
             success:true,
-            msg:'发表成功!',
+            msg:'保存成功!',
             data: results
         });
     } catch (err) {
-        console.log('[SELECT ERROR] - ',err.message);
+        res.send('[SELECT ERROR] - ',err.message);
     }
 });
 
 //获取文章列表
 app.post('/article/getList',async function (req,res,next) {
-    let reportSqlParams = [req.body.pageIndex];
+    let pageIndex = req.body.pageIndex||1;
+    let pageSize = req.body.pageSize||10;
+    let reportSqlParams = [(pageIndex-1)*pageSize,pageSize];
     try {
         let results = await Model(SQLForm.ArticleSQL.getArticleList,reportSqlParams);
         res.json({
@@ -85,7 +87,7 @@ app.post('/article/getList',async function (req,res,next) {
             data: results
         });
     } catch (err) {
-        console.log('[SELECT ERROR] - ',err.message);
+        res.send('[SELECT ERROR] - ',err.message);
     }
 });
 
@@ -101,7 +103,7 @@ app.post('/article/delete',async function (req,res,next) {
             data: results
         });
     } catch (err) {
-        console.log('[SELECT ERROR] - ',err.message);
+        res.send('[SELECT ERROR] - ',err.message);
     }
 });
 
@@ -116,7 +118,7 @@ app.post('/article/secret',async function (req,res,next) {
             data: results
         });
     } catch (err) {
-        console.log('[SELECT ERROR] - ',err.message);
+        res.send('[SELECT ERROR] - ',err.message);
     }
 });
 //设为公开
@@ -130,7 +132,7 @@ app.post('/article/unsecret',async function (req,res,next) {
             data: results
         });
     } catch (err) {
-        console.log('[SELECT ERROR] - ',err.message);
+        res.send('[SELECT ERROR] - ',err.message);
     }
 });
 //置顶
@@ -144,7 +146,7 @@ app.post('/article/top',async function (req,res,next) {
             data: results
         });
     } catch (err) {
-        console.log('[SELECT ERROR] - ',err.message);
+        res.send('[SELECT ERROR] - ',err.message);
     }
 });
 
@@ -197,7 +199,7 @@ app.get('/nextRoute',function (req,res,next) {
 });
 //↑
 
-app.use("*", function(request, response) {
+app.get("*", function(request, response) {
     response.end("404!");
 });
 app.listen(8081, function () {
