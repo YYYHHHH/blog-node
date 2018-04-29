@@ -56,7 +56,7 @@ app.post('/article/report',async function (req,res,next) {
             data: results
         });
     } catch (err) {
-        res.send('[SELECT ERROR] - ',err.message);
+        console.log('[SELECT ERROR] - ',err.message);
     }
 });
 //编辑文章
@@ -70,7 +70,7 @@ app.post('/article/edit',async function (req,res,next) {
             data: results
         });
     } catch (err) {
-        res.send('[SELECT ERROR] - ',err.message);
+        console.log('[SELECT ERROR] - ',err.message);
     }
 });
 
@@ -87,7 +87,7 @@ app.post('/article/getList',async function (req,res,next) {
             data: results
         });
     } catch (err) {
-        res.send('[SELECT ERROR] - ',err.message);
+        console.log('[SELECT ERROR] - ',err.message);
     }
 });
 
@@ -103,7 +103,7 @@ app.post('/article/delete',async function (req,res,next) {
             data: results
         });
     } catch (err) {
-        res.send('[SELECT ERROR] - ',err.message);
+        console.log('[SELECT ERROR] - ',err.message);
     }
 });
 
@@ -118,7 +118,7 @@ app.post('/article/secret',async function (req,res,next) {
             data: results
         });
     } catch (err) {
-        res.send('[SELECT ERROR] - ',err.message);
+        console.log('[SELECT ERROR] - ',err.message);
     }
 });
 //设为公开
@@ -132,7 +132,7 @@ app.post('/article/unsecret',async function (req,res,next) {
             data: results
         });
     } catch (err) {
-        res.send('[SELECT ERROR] - ',err.message);
+        console.log('[SELECT ERROR] - ',err.message);
     }
 });
 //置顶
@@ -146,10 +146,23 @@ app.post('/article/top',async function (req,res,next) {
             data: results
         });
     } catch (err) {
-        res.send('[SELECT ERROR] - ',err.message);
+        console.log('[SELECT ERROR] - ',err.message);
     }
 });
-
+//获取指定文章
+app.post('/article/getArticleById',async function (req,res,next) {
+    let reportSqlParams = [req.body.art_id];
+    try {
+        let results = await Model(SQLForm.ArticleSQL.getArticleById,reportSqlParams);
+        res.json({
+            success:true,
+            msg:'获取成功!',
+            data: results[0]
+        });
+    } catch (err) {
+        console.log('[SELECT ERROR] - ',err.message);
+    }
+});
 
 
 
