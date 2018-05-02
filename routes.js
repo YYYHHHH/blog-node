@@ -165,6 +165,39 @@ app.post('/article/getArticleById',async function (req,res,next) {
 });
 
 
+//获取引用的评论
+async function getQuoteComment(art_id,comment) {
+    let children = await Model(SQLForm.CommentSQL.getCommentsById,[art_id,comment.quote]);
+    comment.children = children[0];
+    if(children[0].quote){
+        getQuoteComment(art_id,children[0])
+    }else{
+        return comment
+    }
+}
+
+//获取指定文章的所有评论
+app.post('/comments/getComments',async function (req,res,next) {
+    let reportSqlParams = [req.body.art_id];
+    try {
+        let results = await Model(SQLForm.CommentSQL.getComments,reportSqlParams);
+        let data = results.map(val=>{
+            if(val.quote){
+                return getQuoteComment(req.body.art_id,val)
+            }else{
+                return val
+            }
+        });
+        res.json({
+            success:true,
+            msg:'获取成功!',
+            data: data
+        });
+    } catch (err) {
+        console.log('[SELECT ERROR] - ',err.message);
+    }
+});
+
 
 
 

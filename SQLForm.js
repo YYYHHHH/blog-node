@@ -10,5 +10,9 @@ module.exports = {
         getArticleList:'SELECT * FROM articlelist LIMIT ?,?',
         getArticleById:'SELECT * FROM articlelist WHERE art_id = ?',
         delete:'DELETE FROM articlelist where art_id=?'
+    },
+    CommentSQL:{
+        getComments:'SELECT * FROM comments WHERE art_id = ?',
+        getCommentsById:'SELECT * FROM comments WHERE art_id = ? AND comments_id = ?',
     }
 };
